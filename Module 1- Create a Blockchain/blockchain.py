@@ -1,7 +1,7 @@
 import datetime
 import hashlib
 import json
-from flask import flask, jsonify
+from flask import Flask, jsonify
 #//Building a Blockchain
 class Blockchain:
     def __init__(self):
@@ -12,7 +12,7 @@ class Blockchain:
          block = {'index':len(self.chain)+1,
                   'timestamp': str(datetime.datetime.now()),
                   'proof': proof,
-                  'pevious_hash': previous_hash}
+                  'previous_hash': previous_hash}
          self.chain.append(block)
          return block
     def get_previous_block(self):
@@ -29,7 +29,7 @@ class Blockchain:
             return new_proof
     def hash(self , block):
         encoded_block = json.dumps(block, sort_keys = True).encode()
-        return hashlib.sha256(encoded_block).hexadigest() 
+        return hashlib.sha256(encoded_block).hexdigest() 
     def is_chain_valid(self,chain):
         previous_block = chain[0]
         block_index = 1
@@ -71,3 +71,5 @@ def get_chain():
     response = {'chain': blockchain.chain,
                 'length': len(blockchain.chain)}
     return jsonify(response),200
+#Running The App
+app.run(host = '0.0.0.0',port = 5000)
